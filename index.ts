@@ -7,12 +7,3 @@ const reqHandler = async (_req: Request) => {
     return new Response(html_contents);
 };
 serve(reqHandler, { port: 8080 });
-
-// const app = new Application();
-
-// app
-//     .get("/hello", (_ctx) => {
-//         return "Hello, Abc!";
-//     })
-//     .static("/", "./public")
-//     .start({ port: 8000 });
