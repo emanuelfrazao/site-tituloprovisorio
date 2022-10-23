@@ -1,9 +1,16 @@
-// import { Application } from "https://deno.land/x/abc@v1.3.3/mod.ts";
-import { serve } from "https://deno.land/std/http/mod.ts";
+import { Application } from "https://deno.land/x/oak/mod.ts";
 
+const app = new Application();
+app.use(async (ctx) => {
+  try {
+    await ctx.send({
+      root: `${Deno.cwd()}/static`,
+      index: "index.html",
+    });
+  } catch {
+    ctx.response.status = 404;
+    ctx.response.body = "Desculpa, não deu";
+  }
+});
 
-const reqHandler = async (_req: Request) => {
-    const html_contents = await Deno.readFile("./index.html");
-    return new Response(html_contents);
-};
-serve(reqHandler, { port: 8080 });
+await app.listen({ port: 8000 });
