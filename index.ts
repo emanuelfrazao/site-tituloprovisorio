@@ -1,16 +1,9 @@
-import { Application } from "https://deno.land/x/oak/mod.ts";
+import { serve } from "https://deno.land/std@0.160.0/http/server.ts";
+import staticFiles from "https://deno.land/x/static_files@1.1.6/mod.ts";
 
-const app = new Application();
-app.use(async (ctx) => {
-  try {
-    await ctx.send({
-      root: `${Deno.cwd()}/static`,
-      index: "index.html",
-    });
-  } catch {
-    ctx.response.status = 404;
-    ctx.response.body = "Desculpa, não deu";
-  }
-});
+const serveFiles = (req: Request) => staticFiles('public')({ 
+    request: req, 
+    respondWith: (r: Response) => r 
+})
 
-await app.listen({ port: 8000 });
+serve((req) => serveFiles(req), { port: 3000 });
